@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 
 export function Button() {
   const [clickButton, setClikcButton] = useState(false);
@@ -13,16 +13,26 @@ export function Button() {
     { side: 6, imageName: "side6.jpg" },
   ];
 
-  let randSide = Math.round(Math.random() * (diceSide.length - 1));
+  let randSide = clickButton
+    ? Math.round(Math.random() * (diceSide.length - 1))
+    : 0;
 
   return (
     <View>
-      <Text> {clickButton ? diceSide[randSide].side : "Click Roll"} </Text>
+      <Image
+        style={clickButton ? styles.image : styles.hide}
+        source={require("../assets/dice-assets/" +
+          diceSide[randSide].imageName)}
+      />
+
+      <Text style={clickButton ? styles.hide : ""}> Click Roll </Text>
       <TouchableOpacity
         style={styles.button}
         onPress={() => setClikcButton(!clickButton)}
       >
-        <Text> {!clickButton ? "Roll" : "Reset"} </Text>
+        <Text>
+          {clickButton ? "(" + diceSide[randSide].side + ") Reset" : "Roll"}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -33,5 +43,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#DDDDDD",
     padding: 10,
+  },
+  image: {
+    opacity: 1,
+    width: 100,
+    height: 100,
+  },
+
+  hide: {
+    opacity: 0,
   },
 });
